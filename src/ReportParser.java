@@ -6,12 +6,12 @@ import java.io.IOException;
  * Websiste: www.cloudtm.eu
  * Date: 24/05/12
  */
-public abstract class ParentParser {
+public abstract class ReportParser {
 
 
    private StatisticsContainer stats;
 
-   public ParentParser(String path) throws IOException{
+   public ReportParser(String path) throws IOException{
       stats = new StatisticsContainer(path);
    }
 

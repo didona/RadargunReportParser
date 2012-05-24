@@ -6,7 +6,7 @@ import java.io.IOException;
  * Websiste: www.cloudtm.eu
  * Date: 24/05/12
  */
-public class OptimisticParser extends ParentParser{
+public class OptimisticParser extends ReportParser {
 
 
    public OptimisticParser(String path) throws IOException{
