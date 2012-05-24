@@ -9,15 +9,15 @@ import java.io.IOException;
 public class OptimisticParser extends ReportParser {
 
 
-   public OptimisticParser(String path) throws IOException{
+   public OptimisticParser(String path) throws IOException {
       super(path);
    }
 
 
-   public double getPrimaryParam(String param){
+   public double getPrimaryParam(String param) {
       double[] values = getParam(param);
-      for(int i=0; i<values.length; i++){
-         if(values[i]>0)
+      for (int i = 0; i < values.length; i++) {
+         if (values[i] > 0)
             return values[i];
       }
       return 0;

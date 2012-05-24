@@ -1,6 +1,5 @@
 import exception.ParameterNotFoundException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -12,28 +11,29 @@ import java.util.HashMap;
  */
 public class Translation {
 
-   private HashMap<String,Integer> translation;
+   private HashMap<String, Integer> translation;
 
-   public Translation(String header)throws IOException{
+   public Translation(String header) throws IOException {
       this.translation = new HashMap<String, Integer>();
-      this.init(header,this.translation);
+      this.init(header, this.translation);
    }
 
-   public int getParamIndex(String param) throws ParameterNotFoundException{
+   public int getParamIndex(String param) throws ParameterNotFoundException {
       Integer i = this.translation.get(param);
-      if(i==null)
+      if (i == null)
          throw new ParameterNotFoundException(param);
       return i;
    }
 
-   private void init(String header, HashMap<String,Integer> translation){
-      String[] read = header.split(";");
+   private void init(String header, HashMap<String, Integer> translation) {
+      String[] read = header.split(",");
       int i = 0;
-      for(String s:read)
-         this.translation.put(s,i++);
+      for (String s : read) {
+         this.translation.put(s, i++);
+      }
    }
 
-   public int size(){
+   public int size() {
       return this.translation.size();
    }
 

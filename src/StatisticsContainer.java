@@ -1,11 +1,10 @@
 import exception.ParameterNotFoundException;
-
-
-import java.io.*;
-
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Author: Diego Didona
@@ -18,59 +17,71 @@ public class StatisticsContainer {
 
    private Translation translation;
    private Array2DRowRealMatrix stats;
+   private int numColumns;
    private int numRows;
-   private int numLines;
 
 
+   public StatisticsContainer(String filePath) throws IOException {
+      BufferedReader source = new BufferedReader(new FileReader(new File(filePath)));
+      String header = source.readLine();
 
-   public StatisticsContainer(String filePath) throws IOException{
-     BufferedReader source = new BufferedReader(new FileReader(new File(filePath)));
-     String header = source.readLine();
-     this.translation = new Translation(header);
+      this.translation = new Translation(header);
 
 
-      this.numRows = translation.size();
-      this.numLines = getNumLines(source);
+      this.numColumns = translation.size();
+      this.numRows = getNumRows(filePath);
 
-      double[][] temp = new double[numLines][numRows];
-      this.initializeStats(source,temp);
+      double[][] temp = new double[numRows][numColumns];
+      this.initializeStats(source, temp);
+      dump(temp, numRows, numColumns);
       stats = new Array2DRowRealMatrix(temp);
+      //System.out.println(stats);
       source.close();
 
    }
 
-   private void initializeStats(BufferedReader br,double[][] stats)throws IOException{
-         String row;
+   private void initializeStats(BufferedReader br, double[][] stats) throws IOException {
+      String row;
       int i = 0;
-         while((row = br.readLine())!=null){
-            fillRow(stats, i, row);
-         }
-      }
-
-   private void fillRow(double [][] stats, int i, String row){
-      String[] split = row.split(";");
-      int j = 0;
-      for(String s : split){
-         stats[i][j++] = Double.parseDouble(s);
-      }
-   }
-
-   private int getNumLines(BufferedReader br)throws IOException{
-      int i=0;
-      while(br.readLine()!=null)
+      while ((row = br.readLine()) != null) {
+         fillRow(stats, i, row);
          i++;
-      return i;
+      }
+      System.out.println("***");
    }
 
-   private String readAndReset(BufferedReader br) throws IOException{
-      String ret = br.readLine();
-      br.reset();
-      return ret;
+   private void fillRow(double[][] stats, int i, String row) {
+      System.out.println(row);
+      String[] split = row.split(",");
+      int j = 0;
+      for (String s : split) {
+         stats[i][j] = Double.parseDouble(s);
+         j++;
+      }
    }
 
-   public double[] getParam(String param)throws ParameterNotFoundException{
-    int index = this.translation.getParamIndex(param);
-    return this.stats.getColumn(index);
+   private int getNumRows(String f) throws IOException {
+      int i = 0;
+      BufferedReader br = new BufferedReader(new FileReader(new File(f)));
+      while (br.readLine() != null)
+         i++;
+      return i - 1; //do not consider header!
    }
+
+
+   public double[] getParam(String param) throws ParameterNotFoundException {
+      int index = this.translation.getParamIndex(param);
+      return this.stats.getColumn(index);
+   }
+
+
+   private void dump(double[][] a, int row, int col) {
+      for (int i = 0; i < row; i++) {
+         for (int j = 0; j < col; j++)
+            System.out.print(a[i][j] + ",");
+         System.out.print("\n");
+      }
+   }
+
 
 }

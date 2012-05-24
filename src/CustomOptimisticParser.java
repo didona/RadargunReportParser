@@ -6,9 +6,9 @@ import java.io.IOException;
  * Websiste: www.cloudtm.eu
  * Date: 24/05/12
  */
-public class CustomOptimisticParser extends OptimisticParser{
+public class CustomOptimisticParser extends OptimisticParser {
 
-   public CustomOptimisticParser(String p)throws IOException{
+   public CustomOptimisticParser(String p) throws IOException {
       super(p);
    }
 
