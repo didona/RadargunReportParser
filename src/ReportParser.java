@@ -1,3 +1,7 @@
+import exception.ParameterNotFoundException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.IOException;
 
 /**
@@ -10,14 +14,20 @@ public abstract class ReportParser {
 
 
    private StatisticsContainer stats;
+   Log log = LogFactory.getLog(ReportParser.class);
 
    public ReportParser(String path) throws IOException {
       stats = new StatisticsContainer(path);
    }
 
    public double getAvgParam(String param) {
-
-      double[] values = param(param);
+      double[] values = null;
+      try {
+         values = param(param);
+      } catch (ParameterNotFoundException p) {
+         log.warn("Parameter " + p + " not found. Returning -1");
+         return -1;
+      }
       int i = 1;
       for (; i < values.length; i++) {
          values[i] += values[i - 1];
@@ -27,7 +37,13 @@ public abstract class ReportParser {
    }
 
    public double getSumParam(String param) {
-      double[] values = param(param);
+      double[] values = null;
+      try {
+         values = param(param);
+      } catch (ParameterNotFoundException p) {
+         log.warn("Parameter " + p + " not found. Returning -1");
+         return -1;
+      }
       int i = 1;
       for (; i < values.length; i++) {
          values[i] += values[i - 1];
@@ -49,10 +65,6 @@ public abstract class ReportParser {
    }
 
    public double getNumNodes() {
-      double[] sl = param("SLAVE_INDEX");
-      for (double d : sl) {
-         System.out.println(d);
-      }
       return param("SLAVE_INDEX").length;
    }
 }

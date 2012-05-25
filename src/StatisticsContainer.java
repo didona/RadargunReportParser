@@ -1,4 +1,6 @@
 import exception.ParameterNotFoundException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 
 import java.io.BufferedReader;
@@ -20,11 +22,11 @@ public class StatisticsContainer {
    private int numColumns;
    private int numRows;
 
+   Log log = LogFactory.getLog(StatisticsContainer.class);
 
    public StatisticsContainer(String filePath) throws IOException {
       BufferedReader source = new BufferedReader(new FileReader(new File(filePath)));
       String header = source.readLine();
-
       this.translation = new Translation(header);
 
 
@@ -33,9 +35,7 @@ public class StatisticsContainer {
 
       double[][] temp = new double[numRows][numColumns];
       this.initializeStats(source, temp);
-      dump(temp, numRows, numColumns);
       stats = new Array2DRowRealMatrix(temp);
-      //System.out.println(stats);
       source.close();
 
    }
@@ -47,15 +47,19 @@ public class StatisticsContainer {
          fillRow(stats, i, row);
          i++;
       }
-      System.out.println("***");
    }
 
    private void fillRow(double[][] stats, int i, String row) {
-      System.out.println(row);
       String[] split = row.split(",");
       int j = 0;
       for (String s : split) {
-         stats[i][j] = Double.parseDouble(s);
+         try{
+            stats[i][j] = Double.parseDouble(s);
+         }
+         catch(Exception e){
+            log.warn("Trying to parse "+s+". Putting -1");
+            stats[i][j] = -1;
+         }
          j++;
       }
    }
@@ -74,7 +78,7 @@ public class StatisticsContainer {
       return this.stats.getColumn(index);
    }
 
-
+   @SuppressWarnings("unused")
    private void dump(double[][] a, int row, int col) {
       for (int i = 0; i < row; i++) {
          for (int j = 0; j < col; j++)
