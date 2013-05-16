@@ -1,3 +1,5 @@
+package parse;
+
 import exception.ParameterNotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,10 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Author: Diego Didona
- * Email: didona@gsd.inesc-id.pt
- * Websiste: www.cloudtm.eu
- * Date: 24/05/12
+ * Author: Diego Didona Email: didona@gsd.inesc-id.pt Websiste: www.cloudtm.eu Date: 24/05/12
  */
 public class StatisticsContainer {
 
@@ -47,17 +46,22 @@ public class StatisticsContainer {
          fillRow(stats, i, row);
          i++;
       }
+      //dump(stats,stats.length,stats[0].length);
+   }
+
+
+   public boolean containsParam(String param){
+      return translation.exist(param);
    }
 
    private void fillRow(double[][] stats, int i, String row) {
       String[] split = row.split(",");
       int j = 0;
       for (String s : split) {
-         try{
+         try {
             stats[i][j] = Double.parseDouble(s);
-         }
-         catch(Exception e){
-            log.warn("Trying to parse "+s+". Putting -1");
+         } catch (Exception e) {
+            log.warn("Trying to parse " + s + ". Putting -1");
             stats[i][j] = -1;
          }
          j++;

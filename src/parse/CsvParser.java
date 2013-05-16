@@ -1,3 +1,5 @@
+package parse;
+
 import exception.ParameterNotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -81,6 +83,10 @@ public abstract class CsvParser {
 
    protected double[] paramToArray(String param) {
       return this.stats.getParam(param);
+   }
+
+   public boolean isParam(String param) {
+      return stats.containsParam(param);
    }
 
 }

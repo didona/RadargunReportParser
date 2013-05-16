@@ -1,3 +1,5 @@
+package parse;
+
 import java.io.IOException;
 
 /**
@@ -6,10 +8,10 @@ import java.io.IOException;
  * @author diego
  * @since 4.0
  */
-public class RadargunCsvParser extends CsvParser{
+public class RadargunCsvParser extends CsvParser {
 
-   private static final String SLAVE_PARAM = "SLAVES_INDEX";
-   private static final String SEC_PARAM = "DURATION(msec)";
+   private static final String SLAVE_PARAM = "SLAVE_INDEX";
+   private static final String SEC_PARAM = "DURATION";
 
    public RadargunCsvParser(String path) throws IOException {
       super(path);

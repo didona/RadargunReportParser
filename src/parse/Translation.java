@@ -1,13 +1,12 @@
+package parse;
+
 import exception.ParameterNotFoundException;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Author: Diego Didona
- * Email: didona@gsd.inesc-id.pt
- * Websiste: www.cloudtm.eu
- * Date: 24/05/12
+ * Author: Diego Didona Email: didona@gsd.inesc-id.pt Websiste: www.cloudtm.eu Date: 24/05/12
  */
 public class Translation {
 
@@ -35,6 +34,10 @@ public class Translation {
 
    public int size() {
       return this.translation.size();
+   }
+
+   public boolean exist(String s){
+      return translation.containsKey(s);
    }
 
 
