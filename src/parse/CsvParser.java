@@ -13,8 +13,10 @@ public abstract class CsvParser {
 
    private StatisticsContainer stats;
    protected Log log = LogFactory.getLog(CsvParser.class);
+   protected String relevantPath;
 
    public CsvParser(String path) throws IOException {
+      relevantPath = path;
       stats = new StatisticsContainer(path);
    }
 
