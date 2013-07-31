@@ -80,15 +80,24 @@ public abstract class CsvParser {
 
    protected final double[] getParam(String param) {
       return paramToArray(param);
-
    }
 
    protected double[] paramToArray(String param) {
-      return this.stats.getParam(param);
+      try {
+         return this.stats.getParam(param);
+      } catch (ParameterNotFoundException p) {
+         return this.stats.getParam(paramFirstLowerCase(param));
+      }
    }
 
    public boolean isParam(String param) {
-      return stats.containsParam(param);
+      boolean b = stats.containsParam(param);
+      return b || stats.containsParam(paramFirstLowerCase(param));
+   }
+
+
+   private String paramFirstLowerCase(String param) {
+      return param.substring(0, 1).toLowerCase() + param.substring(1, param.length());
    }
 
 }
