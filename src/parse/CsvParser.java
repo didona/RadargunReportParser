@@ -15,6 +15,12 @@ public abstract class CsvParser {
    protected Log log = LogFactory.getLog(CsvParser.class);
    protected String relevantPath;
 
+   private final static int NOT_PB = -1;
+
+   static {
+      System.out.println("Parsing framework: only Sum and Avg params cope with partial replication.");
+   }
+
    public CsvParser(String path) throws IOException {
       relevantPath = path;
       stats = new StatisticsContainer(path);
@@ -24,6 +30,9 @@ public abstract class CsvParser {
       double[] values;
       try {
          values = paramToArray(param);
+         int pb = pbIndex(values);
+         if (isPb(pb))
+            return values[pb];
       } catch (ParameterNotFoundException p) {
          log.warn("Parameter " + p + " not found. Returning -1");
          return -1;
@@ -34,6 +43,24 @@ public abstract class CsvParser {
       }
       return values[i - 1] / (i);
 
+   }
+
+   private boolean isPb(int i) {
+      return i != NOT_PB;
+   }
+
+   private int pbIndex(double[] values) {
+      boolean first = true;
+      int index = NOT_PB;
+      for (int i = 0; i < values.length; i++) {
+         if (values[i] > 0) {
+            if (first) {
+               index = i;
+               first = false;
+            }
+         }
+      }
+      return index;
    }
 
    public final double getSumParam(String param) {
@@ -94,7 +121,6 @@ public abstract class CsvParser {
       boolean b = stats.containsParam(param);
       return b || stats.containsParam(paramFirstLowerCase(param));
    }
-
 
    private String paramFirstLowerCase(String param) {
       return param.substring(0, 1).toLowerCase() + param.substring(1, param.length());
