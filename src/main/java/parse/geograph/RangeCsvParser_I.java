@@ -22,6 +22,7 @@ package parse.geograph;/*
  */
 
 import parse.common.CsvParser_I;
+import parse.common.NODE_T;
 import parse.timestamp.CsvTimestamp;
 
 /**

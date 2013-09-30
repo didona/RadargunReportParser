@@ -2,6 +2,7 @@ package parse.geograph;
 
 import exception.ParameterNotFoundException;
 import parse.common.CsvParser;
+import parse.common.NODE_T;
 import parse.timestamp.CsvTimestamp;
 
 import java.io.IOException;
