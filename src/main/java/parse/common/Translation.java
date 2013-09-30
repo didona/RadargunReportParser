@@ -1,4 +1,4 @@
-package parse;
+package parse.common;
 
 import exception.ParameterNotFoundException;
 
@@ -36,7 +36,7 @@ public class Translation {
       return this.translation.size();
    }
 
-   public boolean exist(String s){
+   public boolean exist(String s) {
       return translation.containsKey(s);
    }
 
