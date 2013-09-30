@@ -25,18 +25,6 @@ package parse.common;/*
  * @author Diego Didona, didona@gsd.inesc-id.pt
  *         Date: 30/09/13
  */
-public interface CsvParser_I {
-
-   boolean isParam(String param);
-
-   double getAvgParam(String param);
-
-   double getSumParam(String param);
-
-   double[] getParam(String param);
-
-   String getStringParam(String param);
-
-
-
+public enum NODE_T {
+   MASTER, SLAVE, ALL;
 }
