@@ -8,8 +8,16 @@ import java.io.IOException;
 
 public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
 
+   private CsvTimestamp init, end;
+
    public GeographCsvParser(String path) throws IOException {
       super(path);
+   }
+
+   public GeographCsvParser(String path, CsvTimestamp init, CsvTimestamp end) throws IOException {
+      super(path);
+      this.init = init;
+      this.end = end;
    }
 
    public String getParam(String param, CsvTimestamp from, CsvTimestamp to) {
@@ -61,5 +69,34 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
       }
    }
 
+   @Override
+   public double getAvgParam(String param) {
+      if (!isSetBoundaries())
+         return super.getAvgParam(param);    //To change body of overridden methods use File | Settings | File Templates.
+      return getAvgParam(param, init, end);
+   }
 
+   public double getAvgParam(String param, boolean isMaster) {
+      if (!isSetBoundaries())
+         return super.getAvgParam(param);    //To change body of overridden methods use File | Settings | File Templates.
+      return getAvgParam(param, isMaster, init, end);
+   }
+
+   @Override
+   public double[] getParam(String param) {
+      if (!isSetBoundaries())
+         return super.getParam(param);    //To change body of overridden methods use File | Settings | File Templates.
+      return paramToArray(param, init, end);
+   }
+
+   @Override
+   public String getStringParam(String param) {
+      if (!isSetBoundaries())
+         return super.getStringParam(param);    //To change body of overridden methods use File | Settings | File Templates.
+      return getParam(param, init, end);
+   }
+
+   private boolean isSetBoundaries() {
+      return init != null && end != null;
+   }
 }

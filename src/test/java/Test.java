@@ -8,13 +8,13 @@ public class Test {
    public static void main(String[] args) {
       GeographCsvParser parser = null;
       try {
-         parser = new GeographCsvParser("/Users/mcouceiro/Dropbox/cluster-1.csv");
+         parser = new GeographCsvParser("/Users/diego/Dropbox/cluster-1.csv");
       } catch (IOException e) {
          // TODO Auto-generated catch block
          e.printStackTrace();
       }
 
-      System.out.println(parser.getAvgParam("AvgNumNodesPrepare", new Ts(new Long("1375713250977")), new Ts(new Long("1375713712116"))));
+      System.out.println(parser.getAvgParam("AvgNumNodesPrepare", new Ts(new Long("1375714654711")), new Ts(new Long("1375715297509"))));
 
 
    }

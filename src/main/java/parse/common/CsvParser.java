@@ -27,7 +27,7 @@ public abstract class CsvParser implements CsvParser_I {
       stats = new StatisticsContainer(path);
    }
 
-   public final double getAvgParam(String param) {
+   public double getAvgParam(String param) {
       double[] values;
       try {
          values = paramToArray(param);
@@ -64,7 +64,7 @@ public abstract class CsvParser implements CsvParser_I {
       return index;
    }
 
-   public final double getSumParam(String param) {
+   public double getSumParam(String param) {
       double[] values;
       try {
          values = paramToArray(param);
@@ -79,7 +79,7 @@ public abstract class CsvParser implements CsvParser_I {
       return values[i - 1];
    }
 
-   public final double getStdDev(String param) {
+   public double getStdDev(String param) {
       double mean = getAvgParam(param);
       double[] params = paramToArray(param);
       double std = 0;
@@ -90,7 +90,7 @@ public abstract class CsvParser implements CsvParser_I {
       return Math.pow(std, .5D);
    }
 
-   public final double getMax(String param) {
+   public double getMax(String param) {
       double params[] = paramToArray(param);
       double max = Double.MIN_VALUE;
       for (double d : params)
@@ -98,7 +98,7 @@ public abstract class CsvParser implements CsvParser_I {
       return max;
    }
 
-   public final double getMin(String param) {
+   public double getMin(String param) {
       double params[] = paramToArray(param);
       double min = Double.MAX_VALUE;
       for (double d : params)
@@ -106,7 +106,7 @@ public abstract class CsvParser implements CsvParser_I {
       return min;
    }
 
-   public final double[] getParam(String param) {
+   public double[] getParam(String param) {
       return paramToArray(param);
    }
 
@@ -118,7 +118,7 @@ public abstract class CsvParser implements CsvParser_I {
       }
    }
 
-   public boolean isParam(String param) {
+   public final boolean isParam(String param) {
       boolean b = stats.containsParam(param);
       return b || stats.containsParam(paramFirstLowerCase(param));
    }
@@ -132,7 +132,7 @@ public abstract class CsvParser implements CsvParser_I {
       return stats.getStrParam(param);
    }
 
-   public String getPath(){
+   public final String getPath(){
       return this.relevantPath;
    }
 }
