@@ -37,4 +37,8 @@ public interface CsvParser_I {
 
    String getStringParam(String param);
 
+   public enum NODE_T{
+      MASTER, SLAVE, ALL;
+   }
+
 }

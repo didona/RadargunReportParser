@@ -43,7 +43,7 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
       return values[i - 1] / (i);
    }
 
-   public double getAvgParam(String param, boolean master, CsvTimestamp from, CsvTimestamp to) {
+   public double getAvgParam(String param, NODE_T node_t, CsvTimestamp from, CsvTimestamp to) {
       double[] values;
       try {
          values = paramToArray(param, from, to);
@@ -55,9 +55,12 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
       for (; i < values.length; i++) {
          values[i] += values[i - 1];
       }
-      if (master)
+      if (node_t.equals(NODE_T.MASTER))
          return values[i - 1] / (i) * getAvgParam(NUMBER_OF_NODES, from, to);
-      else
+      else if (node_t.equals(NODE_T.SLAVE)) {
+         double slaves = getAvgParam(NUMBER_OF_NODES);
+         return values[i - 1] / (i) * (slaves - 1D) / slaves;
+      } else
          return values[i - 1] / (i);
    }
 
@@ -76,10 +79,10 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
       return getAvgParam(param, init, end);
    }
 
-   public double getAvgParam(String param, boolean isMaster) {
+   public double getAvgParam(String param, NODE_T node_t) {
       if (!isSetBoundaries())
          return super.getAvgParam(param);    //To change body of overridden methods use File | Settings | File Templates.
-      return getAvgParam(param, isMaster, init, end);
+      return getAvgParam(param, node_t, init, end);
    }
 
    @Override

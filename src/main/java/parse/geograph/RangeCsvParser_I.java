@@ -31,7 +31,7 @@ import parse.timestamp.CsvTimestamp;
 public interface RangeCsvParser_I extends CsvParser_I {
    double[] paramToArray(String param, CsvTimestamp from, CsvTimestamp to);
 
-   double getAvgParam(String param, boolean master, CsvTimestamp from, CsvTimestamp to);
+   double getAvgParam(String param, NODE_T node_type, CsvTimestamp from, CsvTimestamp to);
 
    double getAvgParam(String param, CsvTimestamp from, CsvTimestamp to);
 
