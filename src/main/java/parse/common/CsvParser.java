@@ -13,6 +13,7 @@ public abstract class CsvParser implements CsvParser_I {
 
    protected final static String NUMBER_OF_NODES = "NumNodes";
    private final static int NOT_PB = -1;
+   protected final static String PB_DISCRIMINANT = "NumberOfPuts";
 
    static {
       System.out.println("Parsing framework: only Sum and Avg params cope with partial replication.");
@@ -136,7 +137,7 @@ public abstract class CsvParser implements CsvParser_I {
       return stats.getStrParam(param);
    }
 
-   public final String getPath(){
+   public final String getPath() {
       return this.relevantPath;
    }
 }
