@@ -127,6 +127,10 @@ public abstract class CsvParser implements CsvParser_I {
       return param.substring(0, 1).toLowerCase() + param.substring(1, param.length());
    }
 
+   protected final String paramFirstUpperCase(String param) {
+      return param.substring(0, 1).toUpperCase() + param.substring(1, param.length());
+   }
+
    @Override
    public String getStringParam(String param) {
       return stats.getStrParam(param);

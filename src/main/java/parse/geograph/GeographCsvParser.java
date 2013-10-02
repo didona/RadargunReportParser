@@ -6,6 +6,7 @@ import parse.common.NODE_T;
 import parse.timestamp.CsvTimestamp;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
 
@@ -22,6 +23,7 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
    }
 
    public String getParam(String param, CsvTimestamp from, CsvTimestamp to) {
+      param = paramFirstUpperCase(param);
       try {
          return stats.getStrParam(param, from, to);
       } catch (ParameterNotFoundException p) {
@@ -30,9 +32,12 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
    }
 
    public double getAvgParam(String param, CsvTimestamp from, CsvTimestamp to) {
+      param = paramFirstUpperCase(param);
       double[] values;
       try {
          values = paramToArray(param, from, to);
+         if (log.isTraceEnabled())
+            log.trace(Arrays.toString(values));
       } catch (ParameterNotFoundException p) {
          log.warn("Parameter " + p + " not found. Returning -1");
          return -1;
@@ -45,6 +50,7 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
    }
 
    public double getAvgParam(String param, NODE_T node_t, CsvTimestamp from, CsvTimestamp to) {
+      param = paramFirstUpperCase(param);
       double[] values;
       try {
          values = paramToArray(param, from, to);
@@ -66,21 +72,29 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
    }
 
    public double[] paramToArray(String param, CsvTimestamp from, CsvTimestamp to) {
+      param = paramFirstUpperCase(param);
       try {
          return this.stats.getParam(param, from, to);
       } catch (ParameterNotFoundException p) {
-         return this.stats.getParam(paramFirstLowerCase(param), from, to);
+         try {
+            return this.stats.getParam(paramFirstLowerCase(param), from, to);
+         } catch (ParameterNotFoundException pp) {
+            return this.stats.getParam(paramFirstUpperCase(param), from, to);
+         }
       }
+
    }
 
    @Override
    public double getAvgParam(String param) {
+      param = paramFirstUpperCase(param);
       if (!isSetBoundaries())
          return super.getAvgParam(param);    //To change body of overridden methods use File | Settings | File Templates.
       return getAvgParam(param, init, end);
    }
 
    public double getAvgParam(String param, NODE_T node_t) {
+      param = paramFirstUpperCase(param);
       if (!isSetBoundaries())
          return super.getAvgParam(param);    //To change body of overridden methods use File | Settings | File Templates.
       return getAvgParam(param, node_t, init, end);
@@ -88,6 +102,7 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
 
    @Override
    public double[] getParam(String param) {
+      param = paramFirstUpperCase(param);
       if (!isSetBoundaries())
          return super.getParam(param);    //To change body of overridden methods use File | Settings | File Templates.
       return paramToArray(param, init, end);
@@ -95,6 +110,7 @@ public class GeographCsvParser extends CsvParser implements RangeCsvParser_I {
 
    @Override
    public String getStringParam(String param) {
+      param = paramFirstUpperCase(param);
       if (!isSetBoundaries())
          return super.getStringParam(param);    //To change body of overridden methods use File | Settings | File Templates.
       return getParam(param, init, end);

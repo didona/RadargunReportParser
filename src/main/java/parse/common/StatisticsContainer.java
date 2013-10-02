@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Author: Diego Didona Email: didona@gsd.inesc-id.pt Websiste: www.cloudtm.eu Date: 24/05/12
@@ -109,24 +110,30 @@ public class StatisticsContainer {
 
    /* Not really optimized...*/
    private int[] getIndexTimeStamps(CsvTimestamp from, CsvTimestamp to) {
+      final boolean trace = log.isTraceEnabled();
       int[] res = new int[2]; //0: from ; 1: to
       int timestampIndex = translation.getParamIndex(TIMESTAMP_STRING);
-
+      if (trace) {
+         log.trace("Searching for index of [" + from.toLong() + ", " + to.toLong() + "] with numRows = " + numRows);
+      }
       Long fromStr = from.toLong();
       Long toStr = to.toLong();
       boolean lowerBoundSet = false;
 
       for (int i = 0; i < numRows; i++) {
          Long temp = new Long((String) stats[i][timestampIndex]);
-         if (!lowerBoundSet && temp >= fromStr) {
-            res[0] = i;
-            lowerBoundSet = true;
-         }
-         if (temp > toStr) {
-            res[1] = i - 1;
+         if(trace) log.trace("Comparing "+temp);
+            if (!lowerBoundSet && temp >= fromStr) {
+               res[0] = i;
+               lowerBoundSet = true;
+            }
+         if (temp >= toStr) {
+            res[1] = i;
+            if (trace) log.trace("Returning boundaries " + Arrays.toString(res));
             return res;
          }
       }
+      if (trace) log.trace("Returning boundaries " + Arrays.toString(res));
       return res;
    }
 
