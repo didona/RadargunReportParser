@@ -2,6 +2,7 @@ package parse.radargun.pb;
 
 import exception.ParameterNotFoundException;
 import parse.radargun.Ispn5_2CsvParser;
+import parse.radargun.pb.help.PBHelper;
 
 import java.io.IOException;
 
@@ -18,9 +19,9 @@ public class Ispn5_2CsvParser_PB extends Ispn5_2CsvParser {
 
    private double writePercentage = -1;
 
-   public Ispn5_2CsvParser_PB(String path, double writePercentage) throws IOException {
+   public Ispn5_2CsvParser_PB(String path, PbParserParams parserParams) throws IOException {
       super(path);
-      this.writePercentage = writePercentage;
+      this.writePercentage = parserParams.getWritePercentage();
    }
 
    /**

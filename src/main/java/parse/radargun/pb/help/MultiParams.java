@@ -1,4 +1,4 @@
-package parse.radargun.pb;
+package parse.radargun.pb.help;
 
 import java.util.Set;
 
@@ -8,7 +8,7 @@ import java.util.Set;
  * @author diego
  * @since 4.0
  */
-public class BackupParams {
+public class MultiParams {
 
    public static Set<String> params;
 
