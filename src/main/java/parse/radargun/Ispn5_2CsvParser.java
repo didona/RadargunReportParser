@@ -186,8 +186,21 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
 
 
    public String getReplicationProtocol() {
-      if(isParam("currentProtocolId")){
+      if (isParam("currentProtocolId")) {
          return getStringParam("currentProtocolId");
+      }
+      int id = -1;
+      if (isParam("currentProtocolAsInt")) {
+         id = (int) this.getAvgParam("currentProtocolAsInt");
+      } else if (isParam("CurrentProtocolAsInt")) {
+         id = (int) this.getAvgParam("CurrentProtocolAsInt");
+      }
+      if (id != -1) {
+         if (id == 0)
+            return "2PC";
+         if (id == 1)
+            return "PB";
+         return "TO";
       }
       if (super.relevantPath.contains("PB"))
          return "PB";
@@ -198,8 +211,8 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
    }
 
    public double commitProbability() {
-      double failed = getAvgParam("LOCAL_FAILURES") + getAvgParam("REMOTE_FAILURES");
-      double ok = getAvgParam("WRITE_COUNT") + getAvgParam("READ_COUNT");
+      double failed = getSumParam("LOCAL_FAILURES") + getSumParam("REMOTE_FAILURES");
+      double ok = getSumParam("WRITE_COUNT") + getSumParam("READ_COUNT");
       return ok / (ok + failed);
    }
 
@@ -484,7 +497,7 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
    //NB: this only works if *only* the primary-owner is contacted
    public double primaryOwnerRemoteGetWaitProbability() {
       double allRemoteGets = getSumParam("NumberOfRemoteGets");
-      if(allRemoteGets<=0){
+      if (allRemoteGets <= 0) {
          System.out.println("No remote gets. Read waiting time = 0");
          return 0;
       }

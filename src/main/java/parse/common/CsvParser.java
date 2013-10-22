@@ -12,8 +12,7 @@ import java.io.IOException;
 public abstract class CsvParser implements CsvParser_I {
 
    protected final static String NUMBER_OF_NODES = "NumNodes";
-   private final static int NOT_PB = -1;
-   protected final static String PB_DISCRIMINANT = "NumberOfPuts";
+
 
    static {
       System.out.println("Parsing framework: only Sum and Avg params cope with partial replication.");
@@ -32,9 +31,6 @@ public abstract class CsvParser implements CsvParser_I {
       double[] values;
       try {
          values = paramToArray(param);
-         int pb = pbIndex(values);
-         if (isPb(pb))
-            return values[pb];
       } catch (ParameterNotFoundException p) {
          log.warn("Parameter " + p + " not found. Returning -1");
          return -1;
@@ -47,23 +43,6 @@ public abstract class CsvParser implements CsvParser_I {
 
    }
 
-   private boolean isPb(int i) {
-      return i != NOT_PB;
-   }
-
-   private int pbIndex(double[] values) {
-      boolean first = true;
-      int index = NOT_PB;
-      for (int i = 0; i < values.length; i++) {
-         if (values[i] > 0) {
-            if (first) {
-               index = i;
-               first = false;
-            }
-         }
-      }
-      return index;
-   }
 
    public double getSumParam(String param) {
       double[] values;
@@ -124,11 +103,11 @@ public abstract class CsvParser implements CsvParser_I {
       return b || stats.containsParam(paramFirstLowerCase(param));
    }
 
-   protected final String paramFirstLowerCase(String param) {
+   public static String paramFirstLowerCase(String param) {
       return param.substring(0, 1).toLowerCase() + param.substring(1, param.length());
    }
 
-   protected final String paramFirstUpperCase(String param) {
+   public static String paramFirstUpperCase(String param) {
       return param.substring(0, 1).toUpperCase() + param.substring(1, param.length());
    }
 

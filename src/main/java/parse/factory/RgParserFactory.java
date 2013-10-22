@@ -1,7 +1,7 @@
 package parse.factory;
 
 import parse.radargun.Ispn5_2CsvParser;
-import parse.radargun.Ispn5_2CsvParser_PB;
+import parse.radargun.pb.Ispn5_2CsvParser_PB;
 
 /**
  * // TODO: Document this
