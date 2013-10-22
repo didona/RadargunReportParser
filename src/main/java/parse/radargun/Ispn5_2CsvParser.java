@@ -519,6 +519,10 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
       return remoteWaitedCommits / allRemoteCommits;
    }
 
+   public double remoteAbortServiceTime() {
+      return getAvgParam("remoteUpdateTxRollbackServiceTime");
+   }
+
 
    /*
    PB
