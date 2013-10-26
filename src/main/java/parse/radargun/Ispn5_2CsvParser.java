@@ -247,6 +247,19 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
    }
 
    public double remoteGetRtt() {
+      return getAvgParam("avgRemoteGetRtt");
+   }
+
+   public double remoteGetRttNoWait() {
+      if (isParam("avgGmuClusteredGetCommandRttNoWait")) {
+         if (getAvgParam("avgGmuClusteredGetCommandRttNoWait") != 0) {
+            return getAvgParam("avgGmuClusteredGetCommandRttNoWait");
+         }
+      }
+      return remoteGetRtt();
+   }
+   /*
+   public double remoteGetRtt() {
       if (isParam("avgGmuClusteredGetCommandRttNoWait"))
          return getAvgParam("avgGmuClusteredGetCommandRttNoWait");
       return getAvgParam("AvgRemoteGetRtt");
@@ -258,7 +271,7 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
       log.warn("avgGmuClusteredGetCommandRttNoWait not available. Returning the time with remote waits");
       return remoteGetRtt();
    }
-
+   */
 
    public double numReadsBeforeFirstWrite() {
       return getAvgParam("NumReadsBeforeWrite");
