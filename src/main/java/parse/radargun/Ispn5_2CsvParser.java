@@ -247,7 +247,7 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
    }
 
    public double remoteGetRtt() {
-      return getAvgParam("avgRemoteGetRtt");
+      return remoteGetRttNoWait();
    }
 
    public double remoteGetRttNoWait() {
@@ -256,7 +256,7 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
             return getAvgParam("avgGmuClusteredGetCommandRttNoWait");
          }
       }
-      return remoteGetRtt();
+      return getAvgParam("avgRemoteGetRtt");
    }
    /*
    public double remoteGetRtt() {
