@@ -319,11 +319,11 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
    }
 
    public double numWriteXact() {
-      return getSumParam("WRITE_COUNT");
+      return getSumParam("numberOfLocalCommits") * writePercentageXact();
    }
 
    public double numReadXact() {
-      return getSumParam("READ_COUNT");
+      return getSumParam("numberOfLocalCommits") * (1.0D - writePercentageXact());
    }
 
 
