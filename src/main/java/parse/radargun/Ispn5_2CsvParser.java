@@ -211,14 +211,14 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
    }
 
    public double commitProbability() {
-      double failed = getSumParam("LOCAL_FAILURES") + getSumParam("REMOTE_FAILURES");
-      double ok = getSumParam("WRITE_COUNT") + getSumParam("READ_COUNT");
+      double failed = getSumParam("RemotelyDeadXact") + getSumParam("numLocalPrepareAborts");
+      double ok = numReadXact() + numWriteXact();
       return ok / (ok + failed);
    }
 
    public double writeXactCommitProbability() {
-      double failed = getAvgParam("LOCAL_FAILURES") + getAvgParam("REMOTE_FAILURES");
-      double ok = getAvgParam("WRITE_COUNT");
+      double failed = getSumParam("RemotelyDeadXact") + getSumParam("numLocalPrepareAborts");
+      double ok = numWriteXact();
       return ok / (ok + failed);
    }
 
@@ -582,6 +582,15 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
          all = getSumParam("AvgRemoteGetRtt");
       }
       return (all - primaryRemoteGetRtt()) / (getNumNodes() - 1D);
+   }
+
+
+   public double avgGmuClusteredGetCommandServiceTime() {
+      return getAvgParam("gMUClusteredGetCommandServiceTime");
+   }
+
+   public double avgGmuClusteredGetCommandResponseTime() {
+      return getAvgParam("gMUClusteredGetCommandResponseTime");
    }
 
    /**
