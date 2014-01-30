@@ -100,7 +100,9 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
    }
 
    public double replicationDegree() {
-      return getAvgParam("ReplicationDegree");
+      double rd = getAvgParam("ReplicationDegree");
+      double n = getNumNodes();
+      return Math.min(n, rd);
    }
 
    public double cpu() {
@@ -593,7 +595,7 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
       return getAvgParam("gMUClusteredGetCommandResponseTime");
    }
 
-   public double avgLocalXactCommitLogGetReadVersionCount(){
+   public double avgLocalXactCommitLogGetReadVersionCount() {
       return getAvgParam("localXactCommitLogGetReadVersionCount");
    }
 
