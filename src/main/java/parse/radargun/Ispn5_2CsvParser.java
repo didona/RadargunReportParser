@@ -409,6 +409,10 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
       return getAvgParam("LocalUpdateTxTotalCpuTime");
    }
 
+   public double totalServiceTimeROXact() {
+      return getAvgParam("readOnlyTxTotalCpuTime");
+   }
+
    public double localServiceTimeROXact() {
       return getAvgParam("LocalReadOnlyTxLocalServiceTime");
    }
@@ -421,19 +425,19 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
       return getAvgParam("GMUClusteredGetCommandResponseTime");
    }
 
-   public double prepareCommandServiceTime() {
+   public double localUpdateTxPrepareServiceTime() {
       return getAvgParam("LocalUpdateTxPrepareServiceTime");
    }
 
-   public double prepareCommandResponseTime() {
+   public double localUpdateTxPrepareResponseTime() {
       return getAvgParam("LocalUpdateTxPrepareResponseTime");
    }
 
-   public double commitCommandServiceTime() {
+   public double localUpdateTxCommitServiceTime() {
       return getAvgParam("LocalUpdateTxCommitServiceTime");
    }
 
-   public double commitCommandResponseTime() {
+   public double localUpdateTxCommitResponseTime() {
       return getAvgParam("LocalUpdateTxCommitResponseTime");
    }
 
@@ -587,6 +591,14 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
    }
 
 
+   public double avgUniformServedRemoteGetsPerSecond() {
+      double n = getNumNodes();
+      double otherRemoteGets = numRemoteGets() * (n - 1.0D) / n;
+      double otherRemoteGetsToMe = otherRemoteGets / (n - 1.0D);
+      return otherRemoteGetsToMe / getTestSecDuration();
+   }
+
+
    public double avgGmuClusteredGetCommandServiceTime() {
       return getAvgParam("gMUClusteredGetCommandServiceTime");
    }
@@ -597,6 +609,46 @@ public class Ispn5_2CsvParser extends RadargunCsvParser {
 
    public double avgLocalXactCommitLogGetReadVersionCount() {
       return getAvgParam("localXactCommitLogGetReadVersionCount");
+   }
+
+   public double usecLocalUpdateThroughput() {
+      return writeThroughput() * 1e-6 / getNumNodes();
+   }
+
+   public double usecLocalRoThroughput() {
+      return readThroughput() * 1e-6 / getNumNodes();
+   }
+
+   public double localUpdateCpu() {
+      return usecLocalUpdateThroughput() * totalServiceTimeWrXact();
+   }
+
+   public double localRoCpu() {
+      return usecLocalRoThroughput() * totalServiceTimeROXact();
+   }
+
+   public String pathIsolationLevel() {
+      if (getPath().contains("REPEATABLE"))
+         return "RR";
+      if (getPath().contains("SERIALIZABLE"))
+         return "GMU";
+      throw new IllegalArgumentException("No isolation level in the path");
+   }
+
+   public double avgNumRemoteCommits() {
+      return getAvgParam("numRemoteCommits");
+   }
+
+   public double avgNumRemoteRollbacks() {
+      return getAvgParam("numRemoteRollbacks");
+   }
+
+   public double avgNumSuxPrepare() {
+      return getAvgParam("numRemotePrepares");
+   }
+
+   public double avgNumRemoteRemoteGets() {
+      return getAvgParam("numRemoteRemoteGets");
    }
 
    /**

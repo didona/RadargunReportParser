@@ -14,13 +14,19 @@ public class RadargunCsvParser extends CsvParser {
 
    private static final String SLAVE_PARAM = "SLAVE_INDEX";
    private static final String SEC_PARAM = "DURATION";
+   private static final String SEC_PARAM_2 = "DURATION (msec)";
 
    public RadargunCsvParser(String path) throws IOException {
       super(path);
    }
 
    public double getTestSecDuration() {
-      return this.getAvgParam(SEC_PARAM) / 1000D;
+      String p;
+      if (isParam(SEC_PARAM))
+         p = SEC_PARAM;
+      else
+         p = SEC_PARAM_2;
+      return this.getAvgParam(p) / 1000D;
    }
 
    public double getNumNodes() {
